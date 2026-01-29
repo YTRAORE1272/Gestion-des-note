@@ -1,23 +1,19 @@
 @extends('layouts.app')
 
 @section('contenu')
-<h2>Ajouter un étudiant</h2>
+<h1>Ajouter un étudiant</h1>
 
-<form method="POST" action="{{ route('etudiants.enregistrer') }}">
+<form method="POST" action="{{ route('etudiants.store') }}">
     @csrf
+    <label for="nom">Nom :</label>
+    <input type="text" id="nom" name="nom" required>
 
-    Nom : <input type="text" name="nom" required><br><br>
-    Prénom : <input type="text" name="prenom" required><br><br>
-    Classe : <input type="text" name="classe" required><br><br>
+    <label for="prenom">Prénom :</label>
+    <input type="text" id="prenom" name="prenom" required>
 
-    <h3>Évaluations</h3>
+    <label for="classe">Classe :</label>
+    <input type="text" id="classe" name="classe" required>
 
-    Matière 1 : <input type="text" name="matiere1" required><br>
-    Note 1 : <input type="number" name="note1" required><br><br>
-
-    Matière 2 : <input type="text" name="matiere2" required><br>
-    Note 2 : <input type="number" name="note2" required><br><br>
-
-    <button type="submit">Enregistrer</button>
+    <button type="submit">Ajouter</button>
 </form>
 @endsection

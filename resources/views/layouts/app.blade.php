@@ -16,7 +16,7 @@
 <nav>
     <a href="{{ route('accueil') }}">Accueil</a>
     <a href="{{ route('etudiants.index') }}">Liste des étudiants</a>
-    <a href="{{ route('etudiants.ajouter') }}">Ajouter un étudiant</a>
+    <a href="{{ route('etudiants.create') }}">Ajouter un étudiant</a>
 </nav>
 
 <hr>

@@ -2,68 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Etudiant;
+use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
 
 class EtudiantController extends Controller
 {
-    private $etudiants = [
-        [
-            'id' => 1,
-            'nom' => 'DIA',
-            'prenom' => 'Mamadou',
-            'classe' => '2A',
-            'evaluations' => [
-                ['matiere' => 'Mathématiques', 'note' => 15],
-                ['matiere' => 'Français', 'note' => 17],
-            ]
-        ],
-        [
-            'id' => 2,
-            'nom' => 'BA',
-            'prenom' => 'Aminata',
-            'classe' => '1B',
-            'evaluations' => [
-                ['matiere' => 'Mathématiques', 'note' => 12],
-                ['matiere' => 'Français', 'note' => 14],
-            ]
-        ],
-    ];
-
-    public function index()
+    public function index(Request $request)
     {
-        return view('etudiants.index', [
-            'etudiants' => $this->etudiants
-        ]);
+        $etudiants = $request->session()->get('etudiants', []);
+        return view('etudiants.index', ['etudiants' => $etudiants]);
     }
 
-    public function ajouter()
+    public function show(Request $request, $id)
+    {
+        $etudiants = $request->session()->get('etudiants', []);
+        $etudiant = $etudiants[$id] ?? null;
+        if (!$etudiant) {
+            abort(404);
+        }
+        return view('etudiants.details', ['etudiant' => $etudiant]);
+    }
+
+    public function create()
     {
         return view('etudiants.ajouter');
     }
 
-    public function enregistrer(Request $request)
+    public function store(Request $request)
     {
-        $nouvelEtudiant = [
-            'nom' => $request->nom,
-            'prenom' => $request->prenom,
-            'classe' => $request->classe,
-            'evaluations' => [
-                ['matiere' => $request->matiere1, 'note' => $request->note1],
-                ['matiere' => $request->matiere2, 'note' => $request->note2],
-            ]
-        ];
-
-        return view('etudiants.enregistrer', compact('nouvelEtudiant'));
-    }
-
-    public function details($id)
-    {
-        $etudiant = collect($this->etudiants)->firstWhere('id', $id);
-
-        if (!$etudiant) {
-            return redirect()->route('etudiants.index');
-        }
-
-        return view('etudiants.details', compact('etudiant'));
+        $etudiants = $request->session()->get('etudiants', []);
+        $etudiants[] = new Etudiant(
+            $request->input('nom'),
+            $request->input('prenom'),
+            $request->input('classe'),
+            []
+        );
+        $request->session()->put('etudiants', $etudiants);
+        return redirect()->route('etudiants.index');
     }
 }

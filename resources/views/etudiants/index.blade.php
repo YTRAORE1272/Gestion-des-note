@@ -1,25 +1,13 @@
 @extends('layouts.app')
 
 @section('contenu')
-<h2>Liste des étudiants</h2>
-
-<table>
-    <tr>
-        <th>Nom</th>
-        <th>Prénom</th>
-        <th>Classe</th>
-        <th>Détails</th>
-    </tr>
-
-    @foreach($etudiants as $etudiant)
-    <tr>
-        <td>{{ $etudiant['nom'] }}</td>
-        <td>{{ $etudiant['prenom'] }}</td>
-        <td>{{ $etudiant['classe'] }}</td>
-        <td>
-            <a href="{{ route('etudiants.details', $etudiant['id']) }}">Voir</a>
-        </td>
-    </tr>
+<h1>Liste des étudiants</h1>
+<ul>
+    @foreach ($etudiants as $id => $etudiant)
+        <li>
+            <a href="{{ route('etudiants.show', $id) }}">{{ $etudiant->nom }} {{ $etudiant->prenom }}</a>
+        </li>
     @endforeach
-</table>
+</ul>
+<a href="{{ route('etudiants.create') }}">Ajouter un étudiant</a>
 @endsection
